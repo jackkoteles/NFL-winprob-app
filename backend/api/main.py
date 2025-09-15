@@ -38,3 +38,14 @@ def games(season: int = 2024, week: int = 5) -> List[Dict]:
     df = pd.read_csv("backend/data/games_demo.csv")
     out = df[(df["season"] == season) & (df["week"] == week)]
     return out.to_dict(orient="records")
+
+@app.get("/predictions")
+def predictions(season: int = 2024, week: int = 5) -> List[Dict]:
+    df = pd.read_csv("backend/data/games_demo.csv")
+    out = df[(df["season"] == season) & (df["week"] == week)].copy()
+
+    # Simple placeholder: constant home advantage for now
+    out["p_home_win"] = 0.55
+    out["model_version"] = "v0-stub"
+
+    return out[["game_id", "season", "week", "away_team", "home_team", "p_home_win", "model_version"]].to_dict(orient="records")
