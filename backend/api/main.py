@@ -42,14 +42,18 @@ def games(season: int = 2024, week: int = 5) -> List[Dict]:
 
 @app.get("/predictions")
 def predictions(season: int = 2024, week: int = 5) -> List[Dict]:
-    df = pd.read_csv("backend/data/games_demo.csv")
-    out = df[(df["season"] == season) & (df["week"] == week)].copy()
+    try:
+        df = pd.read_csv("backend/data/predictions_demo.csv")
+    except FileNotFoundError:
+        # Fallback if the pipeline hasn't been run yet
+        df = pd.read_csv("backend/data/games_demo.csv").copy()
+        df["p_home_win"] = 0.55
+        df["model_version"] = "v0-stub"
 
-    # Simple placeholder: constant home advantage for now
-    out["p_home_win"] = 0.55
-    out["model_version"] = "v0-stub"
+    out = df[(df["season"] == season) & (df["week"] == week)]
+    cols = ["game_id","season","week","away_team","home_team","p_home_win","model_version"]
+    return out[cols].to_dict(orient="records")
 
-    return out[["game_id", "season", "week", "away_team", "home_team", "p_home_win", "model_version"]].to_dict(orient="records")
 
 @app.get("/metrics/latest")
 def metrics_latest():

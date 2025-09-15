@@ -1,0 +1,4 @@
+game_id,season,week,away_team,home_team,p_home_win,model_version,generated_at
+2024-W05-BUF-KC,2024,5,BUF,KC,0.55,v0-stub,2025-09-15T21:04:08.840090Z
+2024-W05-DAL-PHI,2024,5,DAL,PHI,0.55,v0-stub,2025-09-15T21:04:08.840090Z
+2024-W05-CHI-GB,2024,5,CHI,GB,0.55,v0-stub,2025-09-15T21:04:08.840090Z
