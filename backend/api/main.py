@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from typing import List, Dict
 import pandas as pd
+from datetime import datetime
 
 app = FastAPI()
 
@@ -49,3 +50,16 @@ def predictions(season: int = 2024, week: int = 5) -> List[Dict]:
     out["model_version"] = "v0-stub"
 
     return out[["game_id", "season", "week", "away_team", "home_team", "p_home_win", "model_version"]].to_dict(orient="records")
+
+@app.get("/metrics/latest")
+def metrics_latest():
+    return {
+        "model_version": "v0-stub",
+        "computed_at": datetime.utcnow().isoformat() + "Z",
+        "split": "demo",
+        "brier": None,
+        "logloss": None,
+        "auc": None,
+        "notes": "Stub metrics; training not implemented yet."
+    }
+
