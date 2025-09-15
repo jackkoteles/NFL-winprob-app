@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from typing import List, Dict
+import pandas as pd
 
 app = FastAPI()
 
@@ -31,3 +32,9 @@ def predictions(season: int = 2024, week: int = 5) -> List[Dict]:
         }
     ]
     return demo
+
+@app.get("/games")
+def games(season: int = 2024, week: int = 5) -> List[Dict]:
+    df = pd.read_csv("backend/data/games_demo.csv")
+    out = df[(df["season"] == season) & (df["week"] == week)]
+    return out.to_dict(orient="records")
